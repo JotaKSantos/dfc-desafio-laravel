@@ -1,0 +1,48 @@
+version: '3'
+
+services: 
+    app:
+        build: .docker/PHP
+        image: jksantos/dfc-image-laravel
+        container_name: app
+        networks: 
+            - laravel-network
+        volumes: 
+            - .:/var/www
+        
+    mysql:
+        image: mysql:5.7
+        networks: 
+            - laravel-network
+        ports: 
+            - "3303:3306"
+        command: --innodb-use-native-aio=0
+        volumes: 
+            - .docker/mysql/dbdata:/var/lib/mysql
+        environment: 
+            - MYSQL_DATABASE=laravel
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=root
+
+    redis:
+        image: redis:alpine
+        expose: 
+            - 6397
+        networks: 
+            - laravel-network
+
+    nginx:
+        build: .docker/nginx
+        container_name: nginx
+        restart: always
+        tty: true
+        ports: 
+            - "8000:80"
+        networks: 
+            - laravel-network
+        volumes: 
+            - .:/var/www
+
+networks: 
+    laravel-network:
+        driver: bridge
