@@ -3,7 +3,7 @@ version: '3'
 services: 
     app:
         build: .docker/PHP
-        image: jksantos/dfc-image-laravel
+        image: jksantos/fcd-image-laravel
         container_name: app
         networks: 
             - laravel-network
