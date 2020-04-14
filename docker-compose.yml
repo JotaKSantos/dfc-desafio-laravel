@@ -34,6 +34,7 @@ services:
     nginx:
         build: .docker/nginx
         container_name: nginx
+        entrypoint: dockerize -template /.docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf nginx -g "daemon off;"
         restart: always
         tty: true
         ports: 
@@ -42,6 +43,9 @@ services:
             - laravel-network
         volumes: 
             - .:/var/www
+        environment: 
+            - HOST_APP=app
+            - PORT_APP=9000
 
 networks: 
     laravel-network:
