@@ -10,7 +10,7 @@ steps:
 
     - id: "Copiando .env"
       name: 'gcr.io/cloud-builders/docker'
-      args: ['exec', '-t', 'app', 'cp', './docker/PHP/.env', '.env']
+      args: ['exec', '-t', 'app', 'cp', './.docker/PHP/.env', '.env']
 
     - id: "Rodando Composer"
       name: 'gcr.io/cloud-builders/docker'
