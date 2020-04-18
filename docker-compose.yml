@@ -2,13 +2,17 @@ version: '3'
 
 services: 
     app:
+        image: jksantos/fcd-image-laravel:latest
         build: .docker/PHP
-        image: jksantos/fcd-image-laravel
+        entrypoint: dockerize -wait tcp://mysql:3306 -timeout 40s php-fpm
         container_name: app
         networks: 
             - laravel-network
         volumes: 
             - .:/var/www
+        depends_on: 
+            - mysql
+            - redis
         
     mysql:
         image: mysql:5.7
@@ -46,6 +50,8 @@ services:
         environment: 
             - HOST_APP=app
             - PORT_APP=9000
+        depends_on: 
+            - app
 
 networks: 
     laravel-network:
